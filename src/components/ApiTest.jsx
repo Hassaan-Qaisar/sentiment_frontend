@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 export const ApiTest = () => {
   const [inputText, setInputText] = useState(""); // State to store user input
+  const [loading, setLoading] = useState(false);
   const [sentiments, setSentiments] = useState([]); // State to store sentiment results
 
   const handleInputChange = (event) => {
@@ -9,6 +10,7 @@ export const ApiTest = () => {
   };
 
   const fetchData = async () => {
+    setLoading(true);
     try {
       // Replace the URL with your Flask API endpoint
       const response = await fetch(
@@ -30,17 +32,27 @@ export const ApiTest = () => {
       }
     } catch (error) {
       console.error("Error:", error);
+    } finally {
+      setLoading(false); // Set loading to false after fetching data
     }
   };
 
   const renderSentiments = () => {
-    return (
-      <ul>
-        {sentiments.map((sentiment, index) => (
-          <li key={index}>{sentiment}</li>
-        ))}
-      </ul>
-    );
+    if (loading) {
+      return <p>Loading...</p>; // Display loading indicator while fetching data
+    }
+
+    if (sentiments.length > 0) {
+      return (
+        <ul>
+          {sentiments.map((sentiment, index) => (
+            <li key={index}>{sentiment}</li>
+          ))}
+        </ul>
+      );
+    }
+
+    return null; // Don't render anything if no sentiment results are available
   };
 
   return (
