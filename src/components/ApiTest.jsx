@@ -4,12 +4,20 @@ export const ApiTest = () => {
   const [inputText, setInputText] = useState(""); // State to store user input
   const [loading, setLoading] = useState(false);
   const [sentiments, setSentiments] = useState([]); // State to store sentiment results
+  const [error, setError] = useState(false); // State to store sentiment results
 
   const handleInputChange = (event) => {
     setInputText(event.target.value); // Update inputText state as user types
   };
 
   const fetchData = async () => {
+    setError(false)
+    setSentiments([])
+    if (inputText === "") {
+      setError(true)
+      return;
+    }
+
     setLoading(true);
     try {
       // Replace the URL with your Flask API endpoint
@@ -63,6 +71,7 @@ export const ApiTest = () => {
         placeholder="Enter one or more texts (separated by line breaks)"
       />
       <button onClick={fetchData}>Fetch Sentiments</button>
+      {error && <p>No input text</p>}
       {renderSentiments()}
     </div>
   );
