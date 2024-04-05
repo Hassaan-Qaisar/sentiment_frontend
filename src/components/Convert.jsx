@@ -8,12 +8,12 @@ export const Convert = () => {
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
-    setError(null); // Clear any previous errors
+    setError(null); 
   };
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    setError(null); // Clear any previous errors
+    setError(null); 
 
     if (!selectedFile) {
       setError('Please select a PDF file to convert.');
